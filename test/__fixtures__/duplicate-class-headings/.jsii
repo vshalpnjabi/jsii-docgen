@@ -5,7 +5,7 @@
       "author"
     ]
   },
-  "description": "Fixture with same-named classes in different submodules",
+  "description": "Fixture with same-named types in different submodules, including a class/struct pair",
   "docs": {
     "stability": "stable"
   },
@@ -78,6 +78,27 @@
       "namespace": "namespace1",
       "symbolId": "lib/namespace1/index:SomeClass"
     },
+    "duplicate-class-headings.namespace1.SharedName": {
+      "assembly": "duplicate-class-headings",
+      "docs": {
+        "stability": "stable",
+        "summary": "SharedName class in namespace1."
+      },
+      "fqn": "duplicate-class-headings.namespace1.SharedName",
+      "initializer": {
+        "docs": {
+          "stability": "stable"
+        }
+      },
+      "kind": "class",
+      "locationInModule": {
+        "filename": "lib/namespace1/index.ts",
+        "line": 10
+      },
+      "name": "SharedName",
+      "namespace": "namespace1",
+      "symbolId": "lib/namespace1/index:SharedName"
+    },
     "duplicate-class-headings.namespace2.SomeClass": {
       "assembly": "duplicate-class-headings",
       "docs": {
@@ -98,6 +119,34 @@
       "name": "SomeClass",
       "namespace": "namespace2",
       "symbolId": "lib/namespace2/index:SomeClass"
+    },
+    "duplicate-class-headings.namespace2.SharedName": {
+      "assembly": "duplicate-class-headings",
+      "datatype": true,
+      "docs": {
+        "stability": "stable",
+        "summary": "SharedName struct in namespace2."
+      },
+      "fqn": "duplicate-class-headings.namespace2.SharedName",
+      "kind": "interface",
+      "locationInModule": {
+        "filename": "lib/namespace2/index.ts",
+        "line": 10
+      },
+      "name": "SharedName",
+      "namespace": "namespace2",
+      "properties": [
+        {
+          "abstract": true,
+          "immutable": true,
+          "name": "value",
+          "optional": true,
+          "type": {
+            "primitive": "string"
+          }
+        }
+      ],
+      "symbolId": "lib/namespace2/index:SharedName"
     }
   },
   "version": "1.0.0"

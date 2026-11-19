@@ -41,6 +41,18 @@ test('same-named classes in different submodules get distinct headings on one pa
   expect(markdown).not.toContain('### UniqueClass (');
 });
 
+test('same-named class and struct in different submodules get distinct headings on one page', async () => {
+  const markdown = (await renderAllSubmodules()).render();
+
+  const klass = headingLine(markdown, 'SharedName', 'namespace1');
+  const struct = headingLine(markdown, 'SharedName', 'namespace2');
+
+  expect(klass).toContain('name="namespace1.SharedName"');
+  expect(struct).toContain('name="namespace2.SharedName"');
+  expect(klass).toContain('id="duplicate-class-headings.namespace1.SharedName"');
+  expect(struct).toContain('id="duplicate-class-headings.namespace2.SharedName"');
+});
+
 test('custom anchor formatter still controls heading ids', async () => {
   const markdown = (await renderAllSubmodules((type) => `custom-${type.id}`)).render();
 

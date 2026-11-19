@@ -167,23 +167,30 @@ export class MarkdownRenderer {
     header: { title: string; id: string } = { title: 'API Reference', id: 'api-reference' },
   ): MarkdownDocument {
     const md = new MarkdownDocument({ header: { title: header.title }, id: header.id });
-    md.section(this.visitConstructs(apiRef.constructs));
-    md.section(this.visitStructs(apiRef.structs));
-    md.section(this.visitClasses(apiRef.classes));
-    md.section(this.visitInterfaces(apiRef.interfaces));
-    md.section(this.visitEnums(apiRef.enums));
+    const headings = this.headingsForTypes([
+      ...apiRef.constructs,
+      ...apiRef.structs,
+      ...apiRef.classes,
+      ...apiRef.interfaces,
+      ...apiRef.enums,
+    ]);
+    md.section(this.visitConstructs(apiRef.constructs, headings));
+    md.section(this.visitStructs(apiRef.structs, headings));
+    md.section(this.visitClasses(apiRef.classes, headings));
+    md.section(this.visitInterfaces(apiRef.interfaces, headings));
+    md.section(this.visitEnums(apiRef.enums, headings));
     return md;
   }
 
   public visitConstructs(
     constructs: ConstructSchema[],
+    headings: Map<string, TypeHeading> = new Map(),
   ): MarkdownDocument {
     if (constructs.length === 0) {
       return MarkdownDocument.EMPTY;
     }
 
     const md = new MarkdownDocument({ header: { title: 'Constructs' } });
-    const headings = this.headingsForTypes(constructs);
     for (const construct of constructs) {
       md.section(this.visitConstruct(construct, headings.get(construct.id)));
     }
@@ -192,13 +199,13 @@ export class MarkdownRenderer {
 
   public visitStructs(
     structs: StructSchema[],
+    headings: Map<string, TypeHeading> = new Map(),
   ): MarkdownDocument {
     if (structs.length === 0) {
       return MarkdownDocument.EMPTY;
     }
 
     const md = new MarkdownDocument({ header: { title: 'Structs' } });
-    const headings = this.headingsForTypes(structs);
     for (const struct of structs) {
       md.section(this.visitStruct(struct, headings.get(struct.id)));
     }
@@ -207,13 +214,13 @@ export class MarkdownRenderer {
 
   public visitClasses(
     classes: ClassSchema[],
+    headings: Map<string, TypeHeading> = new Map(),
   ): MarkdownDocument {
     if (classes.length === 0) {
       return MarkdownDocument.EMPTY;
     }
 
     const md = new MarkdownDocument({ header: { title: 'Classes' } });
-    const headings = this.headingsForTypes(classes);
     for (const klass of classes) {
       md.section(this.visitClass(klass, headings.get(klass.id)));
     }
@@ -222,13 +229,13 @@ export class MarkdownRenderer {
 
   public visitInterfaces(
     ifaces: InterfaceSchema[],
+    headings: Map<string, TypeHeading> = new Map(),
   ): MarkdownDocument {
     if (ifaces.length === 0) {
       return MarkdownDocument.EMPTY;
     }
 
     const md = new MarkdownDocument({ header: { title: 'Protocols' } });
-    const headings = this.headingsForTypes(ifaces);
     for (const iface of ifaces) {
       md.section(this.visitInterface(iface, headings.get(iface.id)));
     }
@@ -237,13 +244,13 @@ export class MarkdownRenderer {
 
   public visitEnums(
     enums: EnumSchema[],
+    headings: Map<string, TypeHeading> = new Map(),
   ): MarkdownDocument {
     if (enums.length === 0) {
       return MarkdownDocument.EMPTY;
     }
 
     const md = new MarkdownDocument({ header: { title: 'Enums' } });
-    const headings = this.headingsForTypes(enums);
     for (const enu of enums) {
       md.section(this.visitEnum(enu, headings.get(enu.id)));
     }
